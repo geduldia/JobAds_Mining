@@ -26,23 +26,21 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.workflow.Extractor;
  */
 public class MatchNotValidatedTools {
 
-	// wird an den Namen der Output-DB angehängt
-	static String jahrgang = "2011";
 
 	// Pfad zur Input-DB mit den klassifizierten Paragraphen
-	static String paragraphsDB = /*"D:/Daten/sqlite/CorrectableParagraphs.db"; */"C:/sqlite/classification/CorrectableParagraphs_"+jahrgang+".db"; // 
+	static String paragraphsDB = "src/main/resources/classification/output/ClassifiedParagraphs.db";
 
 	// Ordner in dem die neue Output-DB angelegt werden soll
-	static String outputFolder = /*"D:/Daten/sqlite/";*/"C:/sqlite/matching/tools/"; // 
+	static String outputFolder = "src/main/resources/information_extraction/output/tools/"; 
 
 	// Name der Output-DB 
-	static String outputDB = "NotValidatedToolMatches_"+jahrgang+".db";
+	static String outputDB = "NotValidatedToolMatches.db";
 	
 	//DB mit den extrahierten Tool-Vorschlägen 
-	static String extratedCompsDB = "C:/sqlite/information_extraction/tools/CorrectableTools_"+jahrgang+".db";
+	static String extrationsDB = "src/main/resources/information_extraction/output/tools/ExtractedTools.db";
 
 	// txt-File zum Speichern der Match-Statistik
-	static File statisticsFile = new File("information_extraction/data/tools/notValidatedMatchingStats.txt");
+	static File statisticsFile = new File("src/main/resources/information_extraction/output/tools/notValidatedMatchingStats.txt");
 	
 	//Anzahl der Paragraphen aus der Input-DB, gegen die gematcht werden soll (-1 = alle)
 	static int maxCount = -1;
@@ -84,11 +82,11 @@ public class MatchNotValidatedTools {
 		}
 			
 		//Einlesen der extrahierten Tool-Vorschläge 
-		Connection extractionsConnection = IE_DBConnector.connect(extratedCompsDB);
+		Connection extractionsConnection = IE_DBConnector.connect(extrationsDB);
 		Set<String> extractions = IE_DBConnector.readEntities(extractionsConnection, IEType.TOOL);
 		//Tool-Vorschläge in eine txt-Datei schreiben
 		//(Der Umweg über den Text-File wird genoommen, um den bereits bestehenden Workflow zum Matchen der validierten Tools nutzen zu können)
-		File notValidatedTools = new File("information_extraction/data/tools/notvalidatedTools.txt");
+		File notValidatedTools = new File("src/main/resources/information_extraction/output/tools/notvalidatedTools.txt");
 		PrintWriter out = new PrintWriter(new FileWriter(notValidatedTools));
 		for (String extracted : extractions) {
 			out.write("\n"+extracted);
@@ -99,8 +97,9 @@ public class MatchNotValidatedTools {
 		long before = System.currentTimeMillis();
 		//erzeugt einen Index auf die Spalten 'ClassTWO' und 'ClassTHREE' (falls noch nicht vorhanden)
 		IE_DBConnector.createIndex(inputConnection, "ClassifiedParagraphs", "ClassTWO, ClassTHREE");
-		Extractor extractor = new Extractor(notValidatedTools, null, IEType.TOOL);
+		Extractor extractor = new Extractor(notValidatedTools, null, null, IEType.TOOL, null);
 		extractor.stringMatch(statisticsFile, inputConnection, outputConnection, maxCount, startPos);
+		notValidatedTools.delete();
 		long after = System.currentTimeMillis();
 		double time = (((double) after - before)/1000)/60;
 		if(time > 60.0){

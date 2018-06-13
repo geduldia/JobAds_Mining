@@ -26,8 +26,7 @@ public class Class_DBConnector {
 		return connection;
 	}
 
-
-	public static void createClassificationOutputTables(Connection connection, boolean correctable)
+	public static void createClassificationOutputTables(Connection connection)
 			throws SQLException {
 		StringBuffer sql;
 		connection.setAutoCommit(false);
@@ -35,32 +34,24 @@ public class Class_DBConnector {
 		sql = new StringBuffer("DROP TABLE IF EXISTS ClassifiedParagraphs");
 		stmt.executeUpdate(sql.toString());
 		sql = new StringBuffer("CREATE TABLE ClassifiedParagraphs" + "(ID INTEGER PRIMARY KEY AUTOINCREMENT , "
-				+ " Text TEXT, " + " Jahrgang 	INT		NOT NULL, " + " ZEILENNR	INT		NOT	NULL, "
-				+ " ClassONE   	INT     NOT NULL, " + " ClassTWO    INT    	NOT NULL, "
-				+ " ClassTHREE  INT    	NOT NULL, " + " ClassFOUR  	INT    	NOT NULL)");
-		// if (correctable) {
-		// sql.append(", UseForTraining INT NOT NULL)");
-		// } else {
-		//
-		// sql.append(")");
-		// }
+				+ " Paragraph TEXT, " + " JobAdID 	INTEGER		NOT NULL, " + " ClassONE   	INT     NOT NULL, "
+				+ " ClassTWO    INT    	NOT NULL, " + " ClassTHREE  INT    	NOT NULL, "
+				+ " ClassFOUR  	INT    	NOT NULL)");
 		stmt.executeUpdate(sql.toString());
 		stmt.close();
 		connection.commit();
 
 	}
 
-	public static void addColumn(Connection connection, String column, String table)
-			throws SQLException {
+	public static void addColumn(Connection connection, String column, String table) throws SQLException {
 		connection.setAutoCommit(false);
 		Statement stmt = connection.createStatement();
-		try{
-			stmt.executeUpdate("ALTER TABLE "+table+" ADD " + column + " TEXT");
+		try {
+			stmt.executeUpdate("ALTER TABLE " + table + " ADD " + column + " TEXT");
 			stmt.close();
 			connection.commit();
-		}
-		catch(SQLException e){
-			//Spalte exisitiert bereits
+		} catch (SQLException e) {
+			// Spalte exisitiert bereits
 		}
 	}
 
@@ -80,29 +71,27 @@ public class Class_DBConnector {
 		System.out.println("initialized new trainingData-Database");
 	}
 
-
-	public static boolean insertClassifiedParagraphsinDB(Connection connection, List<ClassifyUnit> results,
-			int jahrgang, int zeilennummer, boolean correctable) throws SQLException {
+	public static boolean insertClassifiedParagraphsinDB(Connection connection, List<ClassifyUnit> results, int jobAdID)
+			throws SQLException {
 		boolean[] classIDs;
 		try {
 			connection.setAutoCommit(false);
 			Statement stmt = connection.createStatement();
 			PreparedStatement prepStmt;
 			prepStmt = connection.prepareStatement(
-					"INSERT INTO ClassifiedParagraphs (Text, Jahrgang, ZEILENNR, ClassONE,ClassTWO,ClassTHREE,ClassFOUR) VALUES(?,?,?,?,?,?,?)");
+					"INSERT INTO ClassifiedParagraphs (Paragraph, JobAdID, ClassONE,ClassTWO,ClassTHREE,ClassFOUR) VALUES(?,?,?,?,?,?)");
 			for (ClassifyUnit cu : results) {
 				int booleanRpl; // replaces true/false for saving into sqliteDB
 				classIDs = ((ZoneClassifyUnit) cu).getClassIDs();
 				prepStmt.setString(1, cu.getContent());
-				prepStmt.setInt(2, jahrgang);
-				prepStmt.setInt(3, zeilennummer);
+				prepStmt.setInt(2, jobAdID);
 				for (int classID = 0; classID <= 3; classID++) {
 					if (classIDs[classID]) {
 						booleanRpl = 1;
 					} else {
 						booleanRpl = 0;
 					}
-					prepStmt.setInt(4 + classID, booleanRpl);
+					prepStmt.setInt(3 + classID, booleanRpl);
 				}
 				prepStmt.addBatch();
 			}
@@ -113,25 +102,17 @@ public class Class_DBConnector {
 			return true;
 		} catch (SQLException e) {
 			System.out.println("\nFehler beim Schreiben: \n");
-//			boolean printIds = true;;
 			for (ClassifyUnit cu : results) {
-//				if(printIds){
-//					System.out.println("Zeilennr & Jahrgang: " + ((JASCClassifyUnit) cu).getParentID()+" "+ ((JASCClassifyUnit) cu).getSecondParentID()+"\n");
-//					printIds = false;
-//				}
-				
 				System.out.println(cu.getContent());
 			}
 			System.out.println("\n\n");
-			//outputConnection.rollback();
 			e.printStackTrace();
 			return false;
 		}
 
 	}
 
-
-	//Nicht mehr in Gebrauch
+	// Nicht mehr in Gebrauch
 	public static Map<ClassifyUnit, int[]> getTrainingDataFromClassesCorrectable(Connection connection)
 			throws SQLException {
 		Map<ClassifyUnit, int[]> toReturn = new HashMap<ClassifyUnit, int[]>();
@@ -161,7 +142,7 @@ public class Class_DBConnector {
 		return null;
 	}
 
-	//Nicht mehr in Gebrauch
+	// Nicht mehr in Gebrauch
 	public static void updateTrainingData(Connection connection, Map<ClassifyUnit, int[]> td) throws SQLException {
 		connection.setAutoCommit(false);
 		String sql = "INSERT OR REPLACE INTO Trainingdata (Jahrgang, ZEILENNR, Text, ClassONE, ClassTWO, ClassTHREE, ClassFOUR) VALUES (?,?,?,?,?,?,?)";

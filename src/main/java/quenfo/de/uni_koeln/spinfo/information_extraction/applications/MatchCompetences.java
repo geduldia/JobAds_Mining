@@ -22,27 +22,29 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.workflow.Extractor;
  */
 public class MatchCompetences {
 
-	// wird an den Namen der Output-DB angehängt
-	static String jahrgang = "2011";
 
 	// Pfad zur Input-DB mit den klassifizierten Paragraphen
-	static String pararaphsDB = /* "D:/Daten/sqlite/CorrectableParagraphs.db"; */"C:/sqlite/classification/CorrectableParagraphs_"
-			+ jahrgang + ".db"; //
+	static String pararaphsDB = "src/main/resources/classification/output/ClassifiedParagraphs.db";
+	
+	static String extractionsDB = "src/main/resources/information_extraction/output/competences/ExtractedCompetences.db";
 
 	// Ordner in dem die neue Output-DB angelegt werden soll
-	static String outputFolder = /* "D:/Daten/sqlite/"; */"C:/sqlite/matching/competences/";
+	static String outputFolder = "src/main/resources/information_extraction/output/competences/";
 
 	// Name der Output-DB
-	static String outputDB = "CompetenceMatches_" + jahrgang + ".db";
+	static String outputDB = "CompetenceMatches.db";
 
 	// txt-File mit den validierten Kompetenzen
-	static File competences = new File("information_extraction/data/competences/competences.txt");
+	static File competences = new File("src/main/resources/information_extraction/input/competences/competences.txt");
 
+	// txt-File mit bekannten Extraktionsfehlern 
+	static File mistakes = new File("src/main/resources/information_extraction/input/competences/mistakes.txt");
+	
 	// txt-File mit allen 'Modifier'-Ausdrücken
-	static File modifier = new File("information_extraction/data/competences/modifier.txt");
+	static File modifier = new File("src/main/resources/information_extraction/input/competences/modifier.txt");
 
 	// txt-File zur Speicherung der Match-Statistiken
-	static File statisticsFile = new File("information_extraction/data/competences/matchingStats.txt");
+	static File statisticsFile = new File("src/main/resources/information_extraction/input/competences/matchingStats.txt");
 
 	// Anzahl der Paragraphen aus der Input-DB, gegen die gematcht werden soll
 	// (-1 = alle)
@@ -85,12 +87,15 @@ public class MatchCompetences {
 		if (maxCount > tableSize - startPos) {
 			maxCount = tableSize - startPos;
 		}
+		
+		//Verbindung zu Extractions-DB
+		Connection extractionsConnection = IE_DBConnector.connect(extractionsDB);
 
 		// starte Matching
 		long before = System.currentTimeMillis();
 		//erzeugt einen Index auf die Spalte 'ClassTHREE' (falls noch nicht vorhanden)
 		IE_DBConnector.createIndex(inputConnection, "ClassifiedParagraphs", "ClassTHREE");
-		Extractor extractor = new Extractor(competences, modifier, IEType.COMPETENCE);
+		Extractor extractor = new Extractor(competences, mistakes, modifier, IEType.COMPETENCE, extractionsConnection);
 		extractor.stringMatch(statisticsFile, inputConnection, outputConnection, maxCount, startPos);
 		long after = System.currentTimeMillis();
 		double time = (((double) after - before) / 1000) / 60;

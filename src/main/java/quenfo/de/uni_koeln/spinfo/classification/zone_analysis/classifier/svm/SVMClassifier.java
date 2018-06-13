@@ -19,19 +19,15 @@ import quenfo.de.uni_koeln.spinfo.classification.zone_analysis.helpers.SingleToM
 
 public class SVMClassifier extends ZoneAbstractClassifier {
 	
-
-	
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	private String dirPath = "src/main/resources/classification/output/svm/";
+	
 	public Map<ClassifyUnit, boolean[]> predict(List<ClassifyUnit> cus, ExperimentConfiguration expConfig, SingleToMultiClassConverter stmc) throws IOException {
 		
 		//create svmTestDataFile
-		String testFileName = "classification/svm/testFile";
-		File dir = new File("classification/svm");
+		String testFileName = dirPath +  "testFile.txt";
+		File dir = new File(dirPath);
 		if(!dir.exists()){
 			dir.mkdirs();
 		}
@@ -42,7 +38,7 @@ public class SVMClassifier extends ZoneAbstractClassifier {
 		SVMTrainingDataGenerator tdg = new SVMTrainingDataGenerator();
 		tdg.writeData(cus, testFile);	
 		
-		String outputFileName ="classification/svm/predictions";
+		String outputFileName =dirPath+"predictions.txt";
 		String modelFileName = expConfig.getModelFileName();
 		String[] argv = new String[3];
 		argv[0] = testFileName;
@@ -79,11 +75,11 @@ public class SVMClassifier extends ZoneAbstractClassifier {
 //		if(modelFile.exists()){
 //			return ;
 //		}
-		File dir = new File("classification/svm");
+		File dir = new File(dirPath);
 		if(!dir.exists()){
 			dir.mkdirs();
 		}
-		File dataFile = new File("classification/svm/trainingData");
+		File dataFile = new File(dirPath + "trainingData.txt");
 		if(!dataFile.exists()){
 			dataFile.createNewFile();
 		}

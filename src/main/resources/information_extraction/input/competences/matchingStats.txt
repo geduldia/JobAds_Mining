@@ -1,0 +1,63 @@
+number of types found in database: 47
+
+berufserfahrung: 56
+
+führerschein: 35
+abgeschlossen ausbildung: 35
+
+abgeschlossen berufsausbildung: 30
+
+englischkenntnis: 14
+
+ms-office: 10
+
+einschlägig berufserfahrung: 9
+gut deutschkenntnis: 9
+
+kaufmännisch ausbildung: 8
+edv-kenntnis: 8
+
+führerschein klasse B: 7
+
+pkw-führerschein: 6
+
+erster berufserfahrung: 5
+staplerschein: 5
+
+einsatzbereitschaft: 4
+lernbereitschaft: 4
+
+durchsetzungsvermögen: 3
+verkaufserfahrung: 3
+schichtbereitschaft: 3
+programmierkenntnis: 3
+gut pc-kenntnis: 3
+
+studium der fachrichtung elektrotechnik: 2
+gut fachkenntnis: 2
+ausbildung zu techniker: 2
+ms-office kenntnis: 2
+abschluss der hauptschule: 2
+studium der elektrotechnik: 2
+ausgeprägt kommunikationsvermögen: 2
+
+ausbildung zum_zur zimmerer_zimmerin: 1
+berufsausbildung zu treibwerkmechaniker: 1
+praktisch berufserfahrung: 1
+pc grundkenntnis: 1
+heimerfahrung: 1
+schnell auffassungsvermögen: 1
+kranerfahrung: 1
+deutschkenntnis: 1
+dreischichtbereitschaft: 1
+gut it-kenntnis: 1
+berufserfahrung in der werkstatt: 1
+anhängererfahrung: 1
+englisch sprachkenntnis: 1
+höhentauglichkeit: 1
+gut weinkenntnis: 1
+sozialkompetenz: 1
+vertriebserfahrung: 1
+berufserfahrung in gastronomisch bereich: 1
+berufserfahrung in bereich behälter und apparatebau: 1
+

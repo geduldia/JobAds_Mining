@@ -1,9 +1,29 @@
-/classification/
+/src/main/resources/classification/input/JobAds.db
 
-/information_extraction/
+/src/main/resources/classification/output/
 
-/categorization/
 
+/src/main/resources/information_extraction/openNLP_models/
+
+/src/main/resources/information_extraction/sentencedata_models/
+
+/src/main/resources/information_extraction/input/competences/competences_testing.txt
+
+/src/main/resources/information_extraction/input/competences/mistakes_testing.txt
+
+
+/src/main/resources/information_extraction/input/tools/tools_testing.txt
+
+/src/main/resources/information_extraction/input/tools/mistakes_testing.txt
+
+/src/main/resources/information_extraction/output/
+
+
+/src/main/resources/categorization/input/competences/CategorizedCompetences.db
+
+/src/main/resources/categorization/input/tools/CategorizedTools.db
+
+/src/main/resources/categorization/output/
 
 *.log
 .classpath

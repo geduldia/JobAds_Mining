@@ -57,10 +57,27 @@ public class Extractor {
 	 *            type of information
 	 * @throws IOException
 	 */
-	public Extractor(File entities, File modifiers, IEType type) throws IOException {
+	public Extractor(File entities,  File noEntitiesFile, File modifiers, IEType type, Connection extractionsConnection) throws IOException {
 		this.entitiesFile = entities;
+		this.noEntitiesFile = noEntitiesFile;
 		this.type = type;
 		this.jobs = new IEJobs(entities, null, modifiers, null, type);
+		if (extractionsConnection != null) {
+			// liest aus der Output-DB, die - falls vorhanen - manuell
+			// validierten Entitäten aus dem vorherigen Extraktionsdurchgang ein
+			try {
+				// Einlesen der mit 1 (= isCompetence) annotierten Kompetenzen
+				knownEntities = IE_DBConnector.readAnnotatedEntities(extractionsConnection, 1, type);
+				// Einlesen der mit 0 (= isNoCompetence) annotierten Kompetenzen
+				noEntities = IE_DBConnector.readAnnotatedEntities(extractionsConnection, 0, type);
+				// Weitergabe an die IEJobs-Dinstanz
+				jobs.addKnownEntities(knownEntities);
+				jobs.addNoEntities(noEntities);
+			} catch (SQLException e) {
+				// DB enthält keine annotierten Einträge
+				e.printStackTrace();
+			}
+		}
 		initialize();
 	}
 
@@ -117,19 +134,21 @@ public class Extractor {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public Extractor(Connection outputConnection, File entitiesFile, File noEntitiesFile, File contexts, File modifier, IEType type)
-			throws IOException, SQLException {
+	public Extractor(Connection outputConnection, File entitiesFile, File noEntitiesFile, File contexts, File modifier,
+			IEType type) throws IOException, SQLException {
 		this.entitiesFile = entitiesFile;
 		this.noEntitiesFile = noEntitiesFile;
 		this.modifier = modifier;
 		this.contexts = contexts;
 		this.type = type;
-		this.jobs = new IEJobs(entitiesFile, noEntitiesFile, modifier, contexts, type);// new IEJobs(entitiesFile, noEntitiesFile, contexts, type);
+		this.jobs = new IEJobs(entitiesFile, noEntitiesFile, modifier, contexts, type);// new
+																						// IEJobs(entitiesFile,
+																						// noEntitiesFile,
+																						// contexts,
+																						// type);
 		if (outputConnection != null) {
 			// liest aus der Output-DB, die - falls vorhanen - manuell
 			// validierten Entitäten aus dem vorherigen Extraktionsdurchgang ein
-			// (Da im BIBB aber nicht mehr manuell annotiert wird, passiert hier
-			// nichts mehr)
 			try {
 				// Einlesen der mit 1 (= isCompetence) annotierten Kompetenzen
 				knownEntities = IE_DBConnector.readAnnotatedEntities(outputConnection, 1, type);
@@ -189,9 +208,9 @@ public class Extractor {
 		// Lemmatizer und Tagger (nur für den Fall, dass noch lexikalische Infos
 		// generiert werden müssen)
 		is2.tools.Tool lemmatizer = new Lemmatizer(
-				"information_extraction/data/sentencedata_models/ger-tagger+lemmatizer+morphology+graph-based-3.6/lemma-ger-3.6.model");
+				"src/main/resources/information_extraction/sentencedata_models/ger-tagger+lemmatizer+morphology+graph-based-3.6/lemma-ger-3.6.model");
 		is2.tools.Tool tagger = new Tagger(
-				"information_extraction/data/sentencedata_models/ger-tagger+lemmatizer+morphology+graph-based-3.6/tag-ger-3.6.model");
+				"src/main/resources/information_extraction/sentencedata_models/ger-tagger+lemmatizer+morphology+graph-based-3.6/tag-ger-3.6.model");
 
 		List<ClassifyUnit> classifyUnits = null;
 		List<ExtractionUnit> extractionUnits = null;
@@ -204,7 +223,7 @@ public class Extractor {
 		if (maxCount > -1 && paragraphsPerRound > maxCount) {
 			paragraphsPerRound = maxCount;
 		}
-		
+
 		long before;
 		long after;
 		double time;
@@ -221,14 +240,12 @@ public class Extractor {
 			if (maxCount > -1 && readParagraphs + paragraphsPerRound > maxCount) {
 				paragraphsPerRound = maxCount - readParagraphs;
 			}
-			System.out.println(
-					"\nread ClassifyUnits from DB " + offset + " - " + (offset + paragraphsPerRound));
-			classifyUnits = IE_DBConnector.readClassifyUnits(paragraphsPerRound, offset,
-					inputConnection, jobs.type);
+			System.out.println("\nread ClassifyUnits from DB " + offset + " - " + (offset + paragraphsPerRound));
+			classifyUnits = IE_DBConnector.readClassifyUnits(paragraphsPerRound, offset, inputConnection, jobs.type);
 			if (classifyUnits.isEmpty()) {
 				finished = true;
 			}
-			readParagraphs +=classifyUnits.size();
+			readParagraphs += classifyUnits.size();
 			if (readParagraphs >= maxCount) {
 				finished = true;
 			}
@@ -262,7 +279,7 @@ public class Extractor {
 			classifyUnits = null;
 			extractions = null;
 			extractionUnits = null;
-			this.jobs = new IEJobs(entitiesFile, noEntitiesFile,modifier, contexts, type);
+			this.jobs = new IEJobs(entitiesFile, noEntitiesFile, modifier, contexts, type);
 			jobs.addKnownEntities(knownEntities);
 			jobs.addNoEntities(noEntities);
 		}
@@ -306,7 +323,7 @@ public class Extractor {
 		// Lemmatizer (nur für den Fall, dass noch Lemmata generiert werden
 		// müssen)
 		is2.tools.Tool lemmatizer = new Lemmatizer(
-				"information_extraction/data/sentencedata_models/ger-tagger+lemmatizer+morphology+graph-based-3.6/lemma-ger-3.6.model");
+				"src/main/resources/information_extraction/sentencedata_models/ger-tagger+lemmatizer+morphology+graph-based-3.6/lemma-ger-3.6.model");
 
 		List<ClassifyUnit> classifyUnits;
 		List<ExtractionUnit> extractionUnits;
@@ -317,11 +334,11 @@ public class Extractor {
 		int paragraphsPerRound = 50000;
 		int readParagraphs = 0;
 		int offset = startPos;
-		
+
 		if (maxCount > -1 && paragraphsPerRound > maxCount) {
 			paragraphsPerRound = maxCount;
 		}
-	
+
 		Map<String, Integer> matchCounts = new HashMap<String, Integer>();
 		while (true) {
 			// Einlesen der Paragraphen
@@ -329,8 +346,7 @@ public class Extractor {
 				paragraphsPerRound = maxCount - readParagraphs;
 			}
 			System.out.println("\nread ClassifyUnit " + offset + " - " + (offset + paragraphsPerRound));
-			classifyUnits = IE_DBConnector.readClassifyUnits(paragraphsPerRound, offset, inputConnection,
-					jobs.type);
+			classifyUnits = IE_DBConnector.readClassifyUnits(paragraphsPerRound, offset, inputConnection, jobs.type);
 			if (classifyUnits.isEmpty()) {
 				break;
 			}
@@ -370,6 +386,11 @@ public class Extractor {
 		System.out.println("\nwrite Statistics-File");
 		writeStatistics(matchCounts, statisticsFile);
 		lemmatizer = null;
+		// schreibt die txt-Files (competences.txt & noCompetences.txt) neu, da
+		// zu Beginn evtl. neue manuell annotierte eingelsen wurden
+		// (eigentlich nicht mehr notwendig, da im BIBB nicht mehr manuell
+		// annotiert wird)
+		reWriteFiles();
 	}
 
 	// private void cluster(Map<ExtractionUnit, Map<InformationEntity,
@@ -462,7 +483,6 @@ public class Extractor {
 	// }
 
 	private void reWriteFiles() throws IOException {
-
 		if (!entitiesFile.exists()) {
 			entitiesFile.createNewFile();
 		} else {
@@ -479,6 +499,8 @@ public class Extractor {
 			out.write(string + "\n");
 		}
 		out.close();
+		
+		if(noEntitiesFile == null) return;
 		if (!noEntitiesFile.exists()) {
 			noEntitiesFile.createNewFile();
 		} else {
@@ -496,7 +518,6 @@ public class Extractor {
 		}
 		out.close();
 	}
-
 	// private void writeOutputFiles(Map<ExtractionUnit, Map<InformationEntity,
 	// List<Context>>> allExtractions,
 	// File potentialComps, File potentialCompsWithContext) throws IOException {

@@ -41,35 +41,31 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.data.IEType;
 
 public class GroupCompetencesByCooccurrence {
 
-	// wird an den Namen der Output-DB angehängt
-	private static String jahrgang = "2011";
-
 	// DB mit den bereits kategorisierten (AMS-) Kompetenzen
-	private static String categoriesDB = "C:/sqlite/categorization/competences/CategorizedCompetences.db";
+	private static String categoriesDB = "src/main/resources/categorization/input/competences/CategorizedCompetences.db";
 
 	// Matching-Ergebnis der bereits validierten Kompetenzen
-	private static String validMatches = "C:/sqlite/matching/competences/CompetenceMatches_" + jahrgang + ".db";
+	private static String validMatches = "src/main/resources/information_extraction/output/competences/CompetenceMatches.db";
 
 	// Matching-Ergebnis der noch nicht validierten Kompetenzen
-	private static String notValidMatches = "C:/sqlite/matching/competences/NotValidatedCompetenceMatches_" + jahrgang
-			+ ".db";
+	private static String notValidMatches = "src/main/resources/information_extraction/output/competences/NotValidatedCompetenceMatches.db";
 
 	// Ordner für die Output-DB
-	private static String outputFolder = "C:/sqlite/categorization/competences/";
+	private static String outputFolder = "src/main/resources/categorization/output/competences/";
 
 	// Name der Output-DB
-	private static String outputDB = "CompetenceCooccurrences_" + jahrgang + ".db";
+	private static String outputDB = "CompetencesByCooccurrences.db";
 
 	// mindest Chi-Quadrat-Werte für Gruppenzugehörigkeit
 	private static double[] minChiSquares = new double[] { 0.5, 0.1, 0.05, 0.005, 0.0005 };
 
 	// legt fest, ob die Sätze vor der Kookkurrenz-Analyse gekürzt werden oder
 	// nicht
-	private static boolean trimSentences = true;
+	private static boolean trimSentences = false;
 
 	// falls die Sätze gekürzt werden sollen: Anzahl der Wörter vor und hinter
 	// dem Kompetenzbegriff
-	private static int contextSize = 5;
+	private static int contextSize = -1;
 
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 

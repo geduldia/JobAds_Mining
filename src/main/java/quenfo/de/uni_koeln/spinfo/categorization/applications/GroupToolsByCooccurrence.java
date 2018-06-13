@@ -37,23 +37,22 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.data.IEType;
  */
 
 public class GroupToolsByCooccurrence {
-	// wird an den Namen der Output-DB angehängt
-	private static String jahrgang = "2011";
+
 
 	// DB mit den bereits kategorisierten (AMS-) Kompetenzen
-	private static String categoriesDB = "C:/sqlite/categorization/tools/CategorizedTools.db";
+	private static String categoriesDB = "src/main/resources/categorization/input/tools/CategorizedTools.db";
 
 	// Matching-Ergebnis der bereits validierten Kompetenzen
-	private static String validMatches = "C:/sqlite/matching/tools/ToolMatches_" + jahrgang + ".db";
+	private static String validMatches = "src/main/resources/information_extraction/output/tools/ToolMatches.db";
 
 	// Matching-Ergebnis der noch nicht validierten Kompetenzen
-	private static String notValidMatches = "C:/sqlite/matching/tools/NotValidatedToolMatches_" + jahrgang + ".db";
+	private static String notValidMatches = "src/main/resources/information_extraction/output/tools/NotValidatedToolMatches.db";
 
 	// Ordner für die Output-DB
-	private static String outputFolder = "C:/sqlite/categorization/tools/";
+	private static String outputFolder = "src/main/resources/categorization/output/tools/";
 
 	// Name der Output-DB
-	private static String outputDB = "ToolCooccurrences_" + jahrgang + ".db";
+	private static String outputDB = "ToolsByCooccurrence.db";
 
 	// mindest Chi-Quadrat-Werte für Gruppenzugehörigkeit
 	private static double[] minChiSquares = new double[] { 0.5, 0.1, 0.05, 0.005, 0.0005 };

@@ -85,6 +85,12 @@ public class JASCClassifyUnit extends ZoneClassifyUnit {
 	public JASCClassifyUnit(String content, int parentID) {
 		this(content, parentID, UUID.randomUUID());
 	}
+	
+	
+	public JASCClassifyUnit(String content) {
+		super(content, UUID.randomUUID());
+	}
+
 
 	public int getParentID() {
 		return parentID;

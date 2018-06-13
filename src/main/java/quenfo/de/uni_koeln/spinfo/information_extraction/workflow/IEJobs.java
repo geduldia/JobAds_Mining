@@ -588,18 +588,15 @@ public class IEJobs {
 	 */
 	public Map<ExtractionUnit, Map<InformationEntity, List<Pattern>>> extractByStringMatch(
 			List<ExtractionUnit> extractionUnits) {
+		if(entities.keySet().isEmpty()){
+			System.out.println("there are no "+type.name().toLowerCase()+"s to match");
+		}
 		Map<ExtractionUnit, Map<InformationEntity, List<Pattern>>> extractions = new HashMap<ExtractionUnit, Map<InformationEntity, List<Pattern>>>();
 		List<Pattern> List = new ArrayList<Pattern>();
 		for (ExtractionUnit extractionUnit : extractionUnits) {
 			List<TextToken> tokens = extractionUnit.getTokenObjects();
-			int skip = 0;
 			for (int t = 0; t < tokens.size(); t++) {
-				if (t + skip >= tokens.size())
-					break;
-				Token token = tokens.get(t + skip);
-				if (token.isInformationEntity()) {
-					skip += ((TextToken) token).getTokensToCompleteInformationEntity();
-				}
+				Token token = tokens.get(t);
 				String lemma = normalizeLemma(token.getLemma());
 				if (entities.keySet().contains(lemma)) {
 					for (InformationEntity ie : entities.get(lemma)) {

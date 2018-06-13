@@ -51,12 +51,11 @@ public class ExperimentSetupUI {
 
 	public ExperimentConfiguration getExperimentConfiguration(
 			String dataFileName) throws IOException, ClassNotFoundException {	
-		String outputFolderName = dataFileName.substring(0,dataFileName.indexOf("/"))+"/output";	
+		String outputFolderName = dataFileName.substring(0,dataFileName.indexOf("/input"))+"/output/";	
 		Model model = null;
 		AbstractClassifier classifier = null;
 		AbstractFeatureQuantifier fq = null;
 		FeatureUnitConfiguration fuc = null;
-	//	String modelFileName = null;
 		BufferedReader in = new BufferedReader(new InputStreamReader(
 				System.in));
 		while (true) {
@@ -103,7 +102,6 @@ public class ExperimentSetupUI {
 				if(model == null){
 					getExperimentConfiguration(dataFileName);
 				}
-				System.out.println(model);
 				classifier = model.getClassifier();
 				fq = model.getFQ();
 				fuc = model.getFuc();
@@ -236,24 +234,23 @@ public class ExperimentSetupUI {
 	private FeatureUnitConfiguration getFeatureConfig(BufferedReader in)
 			throws IOException {
 		boolean treatEncoding = false;
-		while (true) {
-			System.out.println("treat encoding?");
-			System.out.println("press 'y' or 'n'");
-			String answer = in.readLine();
-			if (answer.toLowerCase().equals("y")) {
-				treatEncoding = true;
-				break;
-			}
-			if (answer.toLowerCase().equals("n")) {
-				break;
-			} else {
-				System.out.println("invalid answer! Try again...");
-			}
-		}
-
+//		while (true) {
+//			System.out.println("treat encoding?");
+//			System.out.println("press 'y' or 'n'");
+//			String answer = in.readLine();
+//			if (answer.toLowerCase().equals("y")) {
+//				treatEncoding = true;
+//				break;
+//			}
+//			if (answer.toLowerCase().equals("n")) {
+//				break;
+//			} else {
+//				System.out.println("invalid answer! Try again...");
+//			}
+//		}
 		boolean norm = false;
 		while (true) {
-			System.out.println("normalize words?");
+			System.out.println("normalize numbers?");
 			System.out.println("press 'y' or 'n'");
 			String answer = in.readLine();
 			if (answer.toLowerCase().trim().equals("y")) {
@@ -268,7 +265,7 @@ public class ExperimentSetupUI {
 		}
 		boolean stem = false;
 		while (true) {
-			System.out.println("stem words?");
+			System.out.println("stem words?\n bücher --> buch\n erwartet --> erwarten");
 			System.out.println("(press 'y' or 'n')");
 			String answer = in.readLine();
 			if (answer.toLowerCase().trim().equals("y")) {
@@ -357,7 +354,6 @@ public class ExperimentSetupUI {
 					String[] split = answer.split("-");
 					nGrams = new int[split.length];
 					for (int i = 0; i < split.length; i++) {
-
 						try {
 							nGrams[i] = Integer.parseInt(split[i]);
 						} catch (NumberFormatException e) {
@@ -381,7 +377,6 @@ public class ExperimentSetupUI {
 
 		}
 		boolean contNgrams = false;
-		System.out.println("");
 		FeatureUnitConfiguration fuc = new FeatureUnitConfiguration(norm, stem,
 				stopwords, nGrams, contNgrams, mi, false);
 		fuc.setTreatEncoding(treatEncoding);
@@ -394,7 +389,7 @@ public class ExperimentSetupUI {
 		while (true) {
 			System.out.println("choose a classifier...");
 			System.out.println();
-			System.out.println("press '1' for KNNClassifier");
+			System.out.println("press '1' for KNNClassifier (recommended)");
 			System.out.println("press '2' for BayesClassifier");
 			System.out.println("press '3' for RocchioClassifier");
 			System.out.println("press '4' for SVM-Classifier");
@@ -426,7 +421,7 @@ public class ExperimentSetupUI {
 		AbstractFeatureQuantifier toReturn = null;
 		while (true) {
 			System.out.println("choose a FeatureQuantifier...");
-			System.out.println("press 1 for LogLikeliHoodQuantifier");
+			System.out.println("press 1 for LogLikeliHoodQuantifier (recommened)");
 			System.out.println("press 2 for AbsoluteFrequencyQuantifier");
 			System.out.println("press 3 for TFIDFQuantifier");
 			System.out.println("press 4 for RelativeFrequencyQuantifier");

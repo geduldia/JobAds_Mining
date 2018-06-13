@@ -85,7 +85,6 @@ public class ZoneClassifyUnit extends ClassifyUnit{
 				}
 			}	
 		}
-		
 	}
 	
 

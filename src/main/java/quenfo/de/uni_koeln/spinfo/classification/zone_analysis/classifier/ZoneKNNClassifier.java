@@ -44,6 +44,10 @@ public class ZoneKNNClassifier extends ZoneAbstractClassifier{
 	public ZoneKNNClassifier(){
 	}
 	
+	public ZoneKNNClassifier(boolean multiclass){
+		this.multiClass = multiclass;
+	}
+	
 
 	
 	/**
@@ -84,10 +88,6 @@ public class ZoneKNNClassifier extends ZoneAbstractClassifier{
 
 
 	
-	
-
-
-	
 	/* (non-Javadoc)
 	 * @see de.uni_koeln.spinfo.bibb.jasc.classifier.AbstractClassifier#classify(de.uni_koeln.spinfo.bibb.jasc.data.ClassifyUnit, de.uni_koeln.spinfo.bibb.jasc.classifier.models.AbstractModel)
 	 */
@@ -115,13 +115,12 @@ public class ZoneKNNClassifier extends ZoneAbstractClassifier{
 			classIDs.add(((ZoneKNNModel) model).getTrainingData().get(featureVector));
 			classIDsByDistance.put(dist, classIDs);
 		}
-		
-		
 		//find k nearest classIDs
 		List<boolean[]> KNNs = new ArrayList<boolean[]>();
 		Iterator<List<boolean[]>> iterator = classIDsByDistance.values().iterator();
 		while(KNNs.size()< knn){
-			KNNs.addAll(iterator.next());
+			List<boolean[]> list = iterator.next();
+			KNNs.addAll(list);
 		}
 		//count classMembers of knn
 		int[] classCounts = new int[numberOfClasses]; 
@@ -132,7 +131,6 @@ public class ZoneKNNClassifier extends ZoneAbstractClassifier{
 				}
 			}
 		}
-		
 		//find nearestclasses
 		int bestCount = 0;
 		List<Integer> bestClasses = new ArrayList<Integer>();

@@ -57,7 +57,7 @@ public class Cat_DBConnector {
 			sentenceColumns = "SentenceID, lemmata";
 		}
 		if (type == IEType.COMPETENCE) {
-			sql = "SELECT Comp, "+sentenceColumns+" FROM Competences";
+			sql = "SELECT Competence, "+sentenceColumns+" FROM Competences";
 		}
 		if (type == IEType.TOOL) {
 			sql = "SELECT Tool, "+sentenceColumns+" FROM Tools";
@@ -407,7 +407,7 @@ public class Cat_DBConnector {
 		connection.setAutoCommit(false);
 		String sql = null;
 		if (type == IEType.COMPETENCE) {
-				sql = "SELECT Comp FROM Competences";
+				sql = "SELECT Competence FROM Competences";
 		}
 		if (type == IEType.TOOL) {
 				sql = "SELECT Tool FROM Tools";

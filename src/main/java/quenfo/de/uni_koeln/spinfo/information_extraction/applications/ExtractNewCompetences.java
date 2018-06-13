@@ -14,7 +14,7 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.workflow.Extractor;
 /**
  * @author geduldia
  * 
- *         Workflow to extract new competences
+ *         Workflow to extract competences from JobAds  
  * 
  *         Input: to class 3 (= applicants profile) classified paragraphs
  * 
@@ -23,30 +23,27 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.workflow.Extractor;
  */
 public class ExtractNewCompetences {
 
-	// wird an den Namen der OutputDB angehängt
-	static String jahrgang = "2011";
-
 	// Pfad zur Input-DB mit den klassifizierten Paragraphen
-	static String inputDB = "C:/sqlite/classification/CorrectableParagraphs_" + jahrgang + ".db";
+	static String inputDB = "src/main/resources/classification/output/ClassifiedParagraphs.db";
 
 	// Output-Ordner
-	static String outputFolder = "C:/sqlite/information_extraction/competences/";
+	static String outputFolder = "src/main/resources/information_extraction/output/competences/";
 
 	// Name der Output-DB
-	static String outputDB = "CorrectableCompetences_" + jahrgang + ".db";
+	static String outputDB = "ExtractedCompetences.db";
 
 	// txt-File mit allen bereits bekannten (validierten) Kompetenzen (die
 	// bekannten Kompetenzn helfen beim Auffinden neuer Kompetenzen)
-	static File competences = new File("information_extraction/data/competences/competences.txt");
+	static File competences = new File("src/main/resources/information_extraction/input/competences/competences.txt");
 
 	// txt-File mit bekannten (typischen) Extraktionsfehlern (würden ansonsten
 	// immer wieder vorgeschlagen werden)
-	static File noCompetences = new File("information_extraction/data/competences/noCompetences.txt");
+	static File noCompetences = new File("src/main/resources/information_extraction/input/competences/mistakes.txt");
 
 	// txt-File mit den Extraktionspatterns
-	static File patternsFile = new File("information_extraction/data/competences/competenceContexts.txt");
+	static File patternsFile = new File("src/main/resources/information_extraction/input/competences/competence_patterns.txt");
 	
-	static File modifierFile = new File("information_extraction/data/competences/modifier.txt");
+	static File modifierFile = new File("src/main/resources/information_extraction/input/competences/modifier.txt");
 
 	// falls nicht alle Paragraphen aus der Input-DB verwendet werden sollen:
 	// hier Anzahl der zu lesenden Paragraphen festlegen

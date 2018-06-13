@@ -30,21 +30,18 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.data.IEType;
  */
 public class GroupCompetences {
 	
-	//wird dem Namen der Output-DB angehängt
-	private static String jahrgang = "2011";
-	
 	// Ordner für die Output-DB
-	private static String outputFolder = "C:/sqlite/categorization/competences/";
+	private static String outputFolder = "src/main/resources/categorization/output/competences/";
 	
 	//Name der Output-DB
-	private static String outputDB = "CompetenceGroups_"+jahrgang+".db";
+	private static String outputDB = "CompetencesCombinded.db";
 	
 	//min. Chi-Quadrat-Werte für Gruppenzugehörigkeit
 	private static int[] levels = new int[]{1,2,3,4,5};
 	
 	//Pfad zu den DBs mit den Stringähnlichkeits-/Kookkurrenz-Gruppen
-	private static String simGroupsDB = "C:/sqlite/categorization/competences/CompetenceStringSimilarities_"+jahrgang+".db";
-	private static String cooccGroupsDB = "C:/sqlite/categorization/competences/CompetenceCooccurrences_"+jahrgang+".db";
+	private static String simGroupsDB = "src/main/resources/categorization/output/competences/CompetencesByStringSimilarity.db";
+	private static String cooccGroupsDB = "src/main/resources/categorization/output/competences/CompetencesCooccurrence.db";
 	
 	private static boolean trimSentences = false;
 	

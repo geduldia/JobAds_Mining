@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 
+import javax.sound.midi.Synthesizer;
+
 import quenfo.de.uni_koeln.spinfo.classification.core.classifier.model.Model;
 import quenfo.de.uni_koeln.spinfo.classification.core.data.ClassifyUnit;
 import quenfo.de.uni_koeln.spinfo.classification.core.data.ExperimentConfiguration;
@@ -45,7 +47,7 @@ public class ZoneJobs {
 
 	public ZoneJobs() throws IOException {
 		System.out.println("ZoneJobs: Achtung - keine Translations gesetzt");
-		sw_filter = new StopwordFilter(new File("classification/data/stopwords.txt"));
+		sw_filter = new StopwordFilter(new File("src/main/resources/classification/input/stopwords.txt"));
 		normalizer = new Normalizer();
 		stemmer = new Stemmer();
 		tokenizer = new FeatureUnitTokenizer();
@@ -57,7 +59,7 @@ public class ZoneJobs {
 			System.out.println("ZoneJobs: Achtung - keine Translations gesetzt");
 		}
 		this.stmc = stmc;
-		sw_filter = new StopwordFilter(new File("classification/data/stopwords.txt"));
+		sw_filter = new StopwordFilter(new File("src/main/resources/classification/input/stopwords.txt"));
 		normalizer = new Normalizer();
 		stemmer = new Stemmer();
 		tokenizer = new FeatureUnitTokenizer();
@@ -486,9 +488,16 @@ public class ZoneJobs {
 			((ZoneClassifyUnit) classifyUnit).setClassIDs(multiClasses);
 			boolean[] newClassIDs = untranslated.get(classifyUnit);
 			singleClassID = -1;
+			boolean multi = false;
 			for (int i = 0; i < newClassIDs.length; i++) {
 				if (newClassIDs[i]) {
-					singleClassID = i + 1;
+					if(multi){
+						singleClassID += 4;
+					}
+					else{
+						singleClassID = i + 1;
+					}
+					multi = true;
 				}
 			}
 			boolean[] newMultiClasses = stmc.getMultiClasses(singleClassID);

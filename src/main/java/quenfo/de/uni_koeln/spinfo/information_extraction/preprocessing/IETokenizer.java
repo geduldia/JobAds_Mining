@@ -27,8 +27,8 @@ public class IETokenizer {
 	private SentenceModel sentenceModel;
 
 	public IETokenizer() {
-		setTokenizeModel("information_extraction/data/openNLPmodels/de-token.bin");
-		setSentenceSplittingModel("information_extraction/data/openNLPmodels/de-sent.bin");
+		setTokenizeModel("src/main/resources/information_extraction/openNLP_models/de-token.bin");
+		setSentenceSplittingModel("src/main/resources/information_extraction/openNLP_models/de-sent.bin");
 	}
 	
 	/**

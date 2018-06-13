@@ -42,23 +42,19 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.data.IEType;
  */
 public class GroupCompetencesByStringSimilarity {
 
-	// wird an den Namen der Output-DB angehängt
-	private static String jahrgang = "2011";
-
 	// DB mit den bereits kategorisierten (AMS-) Kompetenzen
-	private static String categoriesDB = "C:/sqlite/categorization/competences/CategorizedCompetences.db";
+	private static String categoriesDB = "src/main/resources/categorization/input/competences/CategorizedCompetences.db";
 
-	private static String validCompetences = "information_extraction/data/competences/competences.txt";
+	private static String validCompetences = "src/main/resources/information_extraction/input/competences/competences.txt";
 
 	// DB mit den extrahierten Kompetenzvorschlägen
-	private static String notValidatedComps = "C:/sqlite/information_extraction/competences/CorrectableCompetences_"
-			+ jahrgang + ".db";
+	private static String notValidatedComps = "src/main/resources/information_extraction/output/competences/ExtractedCompetences.db";
 
 	// Ordner für die Output-DB
-	private static String outputFolder = "C:/sqlite/categorization/competences/";
+	private static String outputFolder = "src/main/resources/categorization/output/competences/";
 
 	// Name der Output-DB
-	private static String outputDB = "CompetenceStringSimilarities_" + jahrgang + ".db";
+	private static String outputDB = "CompetencesByStringSimilarity.db";
 
 	// mindest Ähnlichkeit für Paare (Wert * (s1.length + s2.length))
 	private static double minPairSimilarity = 1.0;

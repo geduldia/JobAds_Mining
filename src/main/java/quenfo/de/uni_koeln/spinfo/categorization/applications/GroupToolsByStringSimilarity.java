@@ -42,23 +42,20 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.data.IEType;
 
 public class GroupToolsByStringSimilarity {
 
-	// wird an den Namen der Output-DB angehängt
-	private static String jahrgang = "DL_ALL_Spinfo";
 
 	// DB mit den bereits kategorisierten Tools
-	private static String categoriesDB = "C:/sqlite/categorization/tools/CategorizedTools.db";
+	private static String categoriesDB = "src/main/resources/categorization/input/tools/CategorizedTools.db";
 
-	private static String validTools = "information_extraction/data/tools/tools.txt";
+	private static String validTools = "src/main/resources/information_extraction/input/tools/tools.txt";
 
 	// DB mit den extrahierten Toolvorschlägen
-	private static String notValidatedTools = "C:/sqlite/information_extraction/tools/CorrectableTools_" + jahrgang
-			+ ".db";
+	private static String notValidatedTools = "src/main/resources//information_extraction/output/tools/ExtractedTools.db";
 
 	// Ordner für die Output-DB
-	private static String outputFolder = "C:/sqlite/categorization/tools/";
+	private static String outputFolder = "src/main/resources/categorization/output/tools/";
 
 	// Name der Output-DB
-	private static String outputDB = "ToolStringSimilarities_" + jahrgang + ".db";
+	private static String outputDB = "ToolsByStringSimilarity.db";
 
 	// mindest Ähnlichkeit für Paare (Wert * (s1.length + s2.length))
 	private static double minPairSimilarity = 1.0;

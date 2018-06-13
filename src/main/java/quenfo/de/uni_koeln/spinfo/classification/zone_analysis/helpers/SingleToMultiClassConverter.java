@@ -72,7 +72,7 @@ public class SingleToMultiClassConverter {
 
 	public boolean[] getMultiClasses(int singleClassID){
 		
-		if(singleClassID==7){
+		if(singleClassID>6){
 			singleClassID=6;
 		}
 		if(singleClassID > classesCount){

@@ -1,0 +1,91 @@
+FORMAT: CLASS: [tab] classID [new line] Paragraph [empty line]
+CLASSES:
+1 = Unternehmensbeschreibung
+2 = Jobbeschreibung
+3 = Bewerberprofil
+4 = Sonstiges/Formalia
+5 = 1 & 2
+6 = 2 & 3
+
+CLASS:	1
+Uns zeichnen eine erstklassige Dienstleitungsqualität, moderne Salons und ein au�ßergewöhnliches Preiskonzept aus.
+
+CLASS:	1
+Wir sind ein Traditionsgasthaus mit gutbürgerlicher Küche in der ___ Innenstadt.
+
+CLASS:	1
+Kontakt:
+Herr Max Mustermann
+Muster GmbH
+Hauptstraße NUM
+NUM München
+Tel. NUM / NUM NUM NUM_
+
+
+CLASS:	1
+Wir sind familir:
+_______ ist ein Familienunternehmen, das ____ von _____ und ______ _______ gegründet wurde. Heute wird _______ in 2. Generation von ______________ geführt.
+
+CLASS:	2
+Ihre Aufgabengebiete:
+- Verkauf von Balkon- und Zimmerpflanzen, Bäumen und Sträuchern
+- kompetente Beratung unserer Kunden
+
+CLASS:	2
+Die Tätigkeit beinhaltet die Angebotskalkulation für Feuerlöschanlagen, Projektierung und Berechnung von Löschanlagen, Erstellung von Planungskonzepten und Angeboten, Bearbeitung und Kalkulation von Leistungsverzeichnissen sowie die Angebotsverfolgung mit Softwareunterstützung.
+
+CLASS:	2
+Ihre Hauptaufgaben:
+- Fehlerdiagnose
+- Reparatur
+- Modifikation an Verpackungsmaschinen, Prozessanlagen sowie an haustechnischen Anlagen
+- Wartung und Instandhaltungen an technischen Anlagen
+- Umbau und Optimierung von technischen Anlagen nach Vorgaben
+
+CLASS:	2
+Wir bieten Ihnen:
+- Bezahlung nach Tarifvertrag (BZA_DGB)
+- Vertretung durch einen flächendeckenden Betriebsrat
+- gute Sozialleistungen, inklusive Weihnachts- und Urlaubsgeld, Schichtzulagen
+- kostenfreie Arbeitssicherheitskleidung und regelmäßige Vorsorgeuntersuchungen
+- einen unbefristeten Arbeitsvertrag
+- interessante Einsätze bei namhaften Unternehmen
+- Chance auf Übernahme beim Kunden
+- persönliche Betreuung und Beratung durch Ihre Niederlassung
+- einen namenhaften, leistungsstarken Arbeitgeber
+
+CLASS:	3
+Voraussetzungen
+- fundierte PC-Kenntnisse (MS Office-Paket, Adobe)
+- ausgeprägtes technisches Verständnis
+- hohe Flexibilität
+- Teamgeist, Kommunikationsfreudigkeit (Kontakt mit dem Kunden)
+- ein genaues Arbeiten nach den geltenden Arbeitsvorschriften
+- Lernfähigkeit, schnelle Aufnahmefähigkeit, logisches Denken und Handeln
+- Initiative selbstständiges Arbeiten
+- Führerschein Klasse B (neu) bzw. Klasse 3 (alt)
+
+CLASS:	3
+Ihr Profil:
+- Erfolgreich abgeschlossenes Studium der Fachrichtung Elektrotechnik oder Wirtschaftsingenieurwesen mit Schwerpunkt Elektrotechnik
+- Bereitschaft zu Dienstreisen weltweit
+- Verhandlungssichere Deutsch- und Englischkenntnisse in Wort und Schrift
+- Belastbarkeit, Teamfähigkeit
+
+CLASS:	3
+- Abgeschl. Ausbildung zum Speditionskaufmann_-frau, Fachkraft für Lagerwirtschaft (m_w) oder entsprechende Berufserfahrung
+- Gute MS-Office Kenntnisse
+- SAP-Kenntnisse von Vorteil
+- Erfahrung mit Transporeon wünschenswert
+- Schichtbereitschaft (Früh + Spät)
+
+CLASS:	4
+Weitere Infos zum Unternehmen erhalten Sie unter www.example.de
+
+CLASS:	4
+Bewerben Sie sich direkt hier online.
+Wir freuen uns auf Sie!
+
+CLASS:	4
+Bei Interesse bewerben Sie sich bitte schriftlich oder per E-Mail.
+

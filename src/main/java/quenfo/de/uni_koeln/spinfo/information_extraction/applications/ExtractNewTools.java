@@ -24,28 +24,25 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.workflow.Extractor;
  */
 public class ExtractNewTools {
 
-	// wird an den Namen der OutputDB angehängt
-	static String jahrgang = "2011";
-
 	// Pfad zur Input-DB mit den klassifizierten Paragraphen
-	static String inputDB = "C:/sqlite/classification/CorrectableParagraphs_" + jahrgang + ".db";
+	static String paragraphsDB = "src/main/resources/classification/output/ClassifiedParagraphs.db";
 
 	// Output-Ordner
-	static String outputFolder = "C:/sqlite/information_extraction/tools/";
+	static String outputFolder = "src/main/resources/information_extraction/output/tools/";
 
 	// Name der Output-DB
-	static String outputDB = "CorrectableTools_" + jahrgang + ".db";
+	static String outputDB = "ExtractedTools.db";
 
 	// txt-File mit allen bereits bekannten (validierten) Tools (die
 	// bekannten Tools helfen beim Auffinden neuer Kompetenzen)
-	static File tools = new File("information_extraction/data/tools/tools.txt");
+	static File tools = new File("src/main/resources/information_extraction/input/tools/tools.txt");
 
 	// txt-File mit bekannten (typischen) Extraktionsfehlern (würden ansonsten
 	// immer wieder vorgeschlagen werden)
-	static File noTools = new File("information_extraction/data/tools/noTools.txt");
+	static File noTools = new File("src/main/resources/information_extraction/input/tools/mistakes.txt");
 
 	// txt-File mit den Extraktionspatterns
-	static File contextFile = new File("information_extraction/data/tools/toolContexts.txt");
+	static File contextFile = new File("src/main/resources/information_extraction/input/tools/toolPatterns.txt");
 
 	// falls nicht alle Paragraphen aus der Input-DB verwendet werden sollen:
 	// hier Anzahl der zu lesenden Paragraphen festlegen
@@ -60,11 +57,11 @@ public class ExtractNewTools {
 
 		// Verbindung zur Input-DB
 		Connection inputConnection = null;
-		if (!new File(inputDB).exists()) {
-			System.out.println("Database don't exists " + inputDB + "\nPlease change configuration and start again.");
+		if (!new File(paragraphsDB).exists()) {
+			System.out.println("Database don't exists " + paragraphsDB + "\nPlease change configuration and start again.");
 			System.exit(0);
 		} else {
-			inputConnection = IE_DBConnector.connect(inputDB);
+			inputConnection = IE_DBConnector.connect(paragraphsDB);
 		}
 
 		// Prüfe ob maxCount und startPos gültige Werte haben

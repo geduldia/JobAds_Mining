@@ -74,42 +74,23 @@ public class TrainingDataGenerator {
 				line = in.readLine();
 			}	
 			StringBuffer content = new StringBuffer();
-			int parentID = 0;
-			int secondParentID = 0;
-			UUID paragraphID = null;
 			int classID = 0;
 			while (line != null) {
 				String[] splits = line.split("\t");
-				if (splits.length == 3 || splits.length == 2) {
+				if (line.startsWith("CLASS:\t")) {
 
-					if (/** classes.length **/
-					classID != 0) {
+					if (classID != 0) {
 						ZoneClassifyUnit utc = null;
-						if(splits.length == 3){
-							utc = new JASCClassifyUnit(content.toString(), parentID,secondParentID, paragraphID);
-						}
-						else{
-							utc = new ZoneClassifyUnit(content.toString(),paragraphID);
-						}
-					
+						utc = new ZoneClassifyUnit(content.toString());
 						utc.setActualClassID(classID);
+						classID = 0;
 						classifiedData.add(utc);
-					}
-					paragraphID = UUID.fromString(splits[0]);
-					if(splits.length == 3){
-						String[] parentIDs = splits[1].split("-");
-						parentID = Integer.parseInt(parentIDs[0]);
-						if(parentIDs.length == 2){
-							secondParentID = Integer.parseInt(parentIDs[1]);
-						}
-						classID = Integer.parseInt(splits[2]);
 					}
 					else{
 						classID = Integer.parseInt(splits[1]);
 					}
 					content = new StringBuffer();
 					
-
 				} else {
 					content.append(line + "\n");
 				}
@@ -118,9 +99,9 @@ public class TrainingDataGenerator {
 			}
 			if (/** classes.length **/
 			classID != 0) {
-				JASCClassifyUnit utc = new JASCClassifyUnit(content.toString(),
-						parentID, secondParentID, paragraphID);
+				JASCClassifyUnit utc = new JASCClassifyUnit(content.toString());
 				utc.setActualClassID(classID);
+				classID = 0;
 				classifiedData.add(utc);
 			}
 			in.close();

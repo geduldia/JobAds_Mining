@@ -21,33 +21,29 @@ import quenfo.de.uni_koeln.spinfo.information_extraction.workflow.Extractor;
  *         the app.: ExtractNewCompetences) against all class 3 paragraphs
  *         
  *         input: all as class 3 (= applicants profile) classified paragraphs
- *         output: all matching 'competences' togetjer with their containing sentence
+ *         output: all matching 'competences' together with their containing sentence
  *
  */
 public class MatchNotValidatedCompetences {
 
-	// wird an den Namen der Output-DB angehängt
-	static String jahrgang = "2011";
 
 	// Pfad zur Input-DB mit den klassifizierten Paragraphen
-	static String paragraphsDB = /* "D:/Daten/sqlite/CorrectableParagraphs.db"; */"C:/sqlite/classification/CorrectableParagraphs_"
-			+ jahrgang + ".db"; //
+	static String paragraphsDB =  "src/main/resources/classification/output/ClassifiedParagraphs.db";
 
 	// Ordner in dem die neue Output-DB angelegt werden soll
-	static String outputFolder = /* "D:/Daten/sqlite/"; */"C:/sqlite/matching/competences/"; //
+	static String outputFolder =  "src/main/resources/information_extraction/output/competences/";
 
 	// Name der Output-DB
-	static String outputDB = "NotValidatedCompetenceMatches_" + jahrgang + ".db";
+	static String outputDB = "NotValidatedCompetenceMatches.db";
 
 	// DB mit den extrahierten Kompetenz-Vorschlägen
-	static String extratedCompsDB = "C:/sqlite/information_extraction/competences/CorrectableCompetences_" + jahrgang
-			+ ".db";
+	static String extratedCompsDB =  "src/main/resources/information_extraction/output/competences/ExtractedCompetences.db";
 
 	// txt-File mit den Modifizierern
-	static File modifier = new File("information_extraction/data/competences/modifier.txt");
+	static File modifier = new File("src/main/resources/information_extraction/input/competences/modifier.txt");
 
 	// txt-File zum Speichern der Match-Statistik
-	static File statisticsFile = new File("information_extraction/data/competences/notValidatedMatchingStats.txt");
+	static File statisticsFile = new File("src/main/resources/information_extraction/output/competences/notValidatedMatchingStats.txt");
 
 	// Anzahl der Paragraphen aus der Input-DB, gegen die gematcht werden soll
 	// (-1 = alle)
@@ -97,20 +93,23 @@ public class MatchNotValidatedCompetences {
 		// (Der Umweg über den txt-File wird genommen, um den bereits
 		// bestehenden Workflow zum Matchen der validierten Kompetenzen nutzen
 		// zu können)
-		File notValidatedCompetences = new File("information_extraction/data/competences/notValidatedCompetences.txt");
+		File notValidatedCompetences = new File("src/main/resources/information_extraction/output/competences/notValidatedCompetences.txt");
+		if(!notValidatedCompetences.exists()){
+			notValidatedCompetences.createNewFile();
+		}
 		PrintWriter out = new PrintWriter(new FileWriter(notValidatedCompetences));
 		for (String extracted : extractions) {
 			out.write("\n" + extracted);
 		}
 		out.close();
-
 		// start Matching
 		long before = System.currentTimeMillis();
 		// erzeugt einen Index auf die Spalte 'ClassTHREE' (falls noch nicht
 		// vorhanden)
 		IE_DBConnector.createIndex(inputConnection, "ClassifiedParagraphs", "ClassTHREE");
-		Extractor extractor = new Extractor(notValidatedCompetences, modifier, IEType.COMPETENCE);
+		Extractor extractor = new Extractor(notValidatedCompetences, null, modifier, IEType.COMPETENCE, null);
 		extractor.stringMatch(statisticsFile, inputConnection, outputConnection, maxCount, startPos);
+		notValidatedCompetences.delete();
 		long after = System.currentTimeMillis();
 		double time = (((double) after - before) / 1000) / 60;
 		if (time > 60.0) {
